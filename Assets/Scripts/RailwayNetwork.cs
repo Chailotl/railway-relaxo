@@ -4,6 +4,27 @@ using UnityEngine;
 
 public class RailwayNetwork : MonoBehaviour
 {
+	public struct GridPos
+	{
+		public int x;
+		public int z;
+
+		public GridPos(int x, int z)
+		{
+			this.x = x;
+			this.z = z;
+		}
+
+		public static GridPos north = new GridPos(0, 1);
+		public static GridPos south = new GridPos(0, -1);
+		public static GridPos east = new GridPos(1, 0);
+		public static GridPos west = new GridPos(-1, 0);
+
+		public static GridPos operator +(GridPos lhs, GridPos rhs) => new GridPos(lhs.x + rhs.x, lhs.z + rhs.z);
+		public static GridPos operator -(GridPos lhs, GridPos rhs) => new GridPos(lhs.x - rhs.x, lhs.z - rhs.z);
+		public static implicit operator Vector3(GridPos pos) => new Vector3(pos.x, 0, pos.z);
+	}
+
 	public class RailNode
 	{
 		public RailNode northNode;
