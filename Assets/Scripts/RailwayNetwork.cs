@@ -2,17 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class RailwayNetwork : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public class RailNode
+	{
+		public RailNode northNode;
+		public RailNode southNode;
+		public RailNode eastNode;
+		public RailNode westNode;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+		public bool ns;
+		public bool ew;
+
+		public bool ne;
+		public bool nw;
+		public bool se;
+		public bool sw;
+
+		public RailNode(bool ns, bool ew, bool ne, bool nw, bool se, bool sw)
+		{
+			this.ns = ns;
+			this.ew = ew;
+			this.ne = ne;
+			this.nw = nw;
+			this.se = se;
+			this.sw = sw;
+		}
+	}
 }
