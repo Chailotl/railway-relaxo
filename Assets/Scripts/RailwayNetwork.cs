@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class RailwayNetwork : MonoBehaviour
 {
+	private Dictionary<GridPos, RailNode> railNodes = new Dictionary<GridPos, RailNode>();
+
+	[SerializeField]
+	private GameObject straightTrack;
+	[SerializeField]
+	private GameObject angleTrack;
+
 	public struct GridPos
 	{
 		public int x;
@@ -48,6 +55,101 @@ public class RailwayNetwork : MonoBehaviour
 			this.nw = nw;
 			this.se = se;
 			this.sw = sw;
+		}
+	}
+
+	void Start()
+	{
+		addNode(new GridPos(0, 0), new RailNode(true, false, false, false, false, false));
+		addNode(new GridPos(0, 1), new RailNode(false, false, false, false, true, false));
+		addNode(new GridPos(1, 1), new RailNode(false, true, false, false, false, false));
+		addNode(new GridPos(2, 1), new RailNode(false, false, false, false, false, true));
+		addNode(new GridPos(2, 0), new RailNode(true, false, false, false, false, false));
+		addNode(new GridPos(2, -1), new RailNode(false, false, false, true, false, false));
+		addNode(new GridPos(1, -1), new RailNode(false, true, false, false, false, false));
+		addNode(new GridPos(0, -1), new RailNode(false, false, true, false, false, false));
+	}
+
+	public bool addNode(GridPos pos, RailNode node)
+	{
+		if (railNodes.ContainsKey(pos)) { return false; }
+
+		railNodes.Add(pos, node);
+
+		// Add game objects and connect nodes
+		if (node.ns)
+		{
+			joinWithNorthNode(pos, node);
+			joinWithSouthNode(pos, node);
+			Instantiate(straightTrack, pos, Quaternion.identity);
+		}
+		if (node.ew)
+		{
+			joinWithEastNode(pos, node);
+			joinWithWestNode(pos, node);
+			Instantiate(straightTrack, pos, Quaternion.Euler(0, 90, 0));
+		}
+		if (node.ne)
+		{
+			joinWithNorthNode(pos, node);
+			joinWithEastNode(pos, node);
+			Instantiate(angleTrack, pos, Quaternion.Euler(0, 180, 0));
+		}
+		if (node.nw)
+		{
+			joinWithNorthNode(pos, node);
+			joinWithWestNode(pos, node);
+			Instantiate(angleTrack, pos, Quaternion.Euler(0, 90, 0));
+		}
+		if (node.se)
+		{
+			joinWithSouthNode(pos, node);
+			joinWithEastNode(pos, node);
+			Instantiate(angleTrack, pos, Quaternion.Euler(0, 270, 0));
+		}
+		if (node.sw)
+		{
+			joinWithSouthNode(pos, node);
+			joinWithWestNode(pos, node);
+			Instantiate(angleTrack, pos, Quaternion.identity);
+		}
+
+		return true;
+	}
+
+	public void joinWithNorthNode(GridPos pos, RailNode node)
+	{
+		if (railNodes.TryGetValue(pos + GridPos.north, out RailNode otherNode))
+		{
+			node.northNode = otherNode;
+			otherNode.southNode = node;
+		}
+	}
+
+	public void joinWithSouthNode(GridPos pos, RailNode node)
+	{
+		if (railNodes.TryGetValue(pos + GridPos.south, out RailNode otherNode))
+		{
+			node.southNode = otherNode;
+			otherNode.northNode = node;
+		}
+	}
+
+	public void joinWithEastNode(GridPos pos, RailNode node)
+	{
+		if (railNodes.TryGetValue(pos + GridPos.east, out RailNode otherNode))
+		{
+			node.eastNode = otherNode;
+			otherNode.westNode = node;
+		}
+	}
+
+	public void joinWithWestNode(GridPos pos, RailNode node)
+	{
+		if (railNodes.TryGetValue(pos + GridPos.west, out RailNode otherNode))
+		{
+			node.westNode = otherNode;
+			otherNode.eastNode = node;
 		}
 	}
 }
