@@ -13,8 +13,8 @@ public class RailwayNetwork : MonoBehaviour
 
 	public struct GridPos
 	{
-		public int x;
-		public int z;
+		public readonly int x;
+		public readonly int z;
 
 		public GridPos(int x, int z)
 		{
