@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RailwayNetwork : MonoBehaviour
 {
-	private Dictionary<GridPos, RailNode> railNodes = new Dictionary<GridPos, RailNode>();
+	public static Dictionary<GridPos, RailNode> railNodes = new Dictionary<GridPos, RailNode>();
 
 	[SerializeField]
 	private GameObject straightTrack;
