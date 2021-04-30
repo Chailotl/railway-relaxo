@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -70,7 +71,7 @@ public class RailwayNetwork : MonoBehaviour
 		}
 	}
 
-	void Start()
+	void Awake()
 	{
 		addNode(new GridPos(0, 0), new RailNode(true, false, false, false, false, false));
 		addNode(new GridPos(0, 1), new RailNode(false, false, false, false, true, false));
