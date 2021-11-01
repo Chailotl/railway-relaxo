@@ -54,6 +54,7 @@ public class RailwayNetwork : MonoBehaviour
 		public RailNode eastNode;
 		public RailNode westNode;
 
+		// TODO: combine these into a bit flag
 		public bool ns;
 		public bool ew;
 
@@ -62,6 +63,7 @@ public class RailwayNetwork : MonoBehaviour
 		public bool se;
 		public bool sw;
 
+		// TODO: use an enum instead of 6 bools
 		public RailNode(bool ns, bool ew, bool ne, bool nw, bool se, bool sw)
 		{
 			this.ns = ns;
