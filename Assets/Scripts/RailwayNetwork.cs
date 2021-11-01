@@ -47,6 +47,8 @@ public class RailwayNetwork : MonoBehaviour
 
 	public class RailNode
 	{
+		public GridPos pos;
+
 		public RailNode northNode;
 		public RailNode southNode;
 		public RailNode eastNode;
@@ -88,6 +90,7 @@ public class RailwayNetwork : MonoBehaviour
 		if (railNodes.ContainsKey(pos)) { return false; }
 
 		railNodes.Add(pos, node);
+		node.pos = pos;
 
 		// Add game objects and connect nodes
 		if (node.ns)
