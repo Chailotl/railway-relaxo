@@ -10,12 +10,14 @@ public class Train : MonoBehaviour
 	}
 
 	private RailwayNetwork.RailNode node;
+	private RailwayNetwork.GridPos gridPos;
 	private Direction direction;
 	private Vector3 toPos;
 
 	void Start()
 	{
 		node = RailwayNetwork.railNodes[new RailwayNetwork.GridPos(0, 0)];
+		gridPos = new RailwayNetwork.GridPos(0, 0);
 		direction = Direction.NORTH;
 		toPos = new Vector3(0, 0, 0.5f);
 	}
@@ -28,49 +30,89 @@ public class Train : MonoBehaviour
 
 		if (pos == toPos)
 		{
+			RailwayNetwork.RailNode nextNode = null;
+
 			if (direction == Direction.NORTH && node.northNode != null)
 			{
-				node = node.northNode;
-				toPos += new Vector3(0, 0, 0.5f);
+				nextNode = node.northNode;
 			}
 			else if (direction == Direction.EAST && node.eastNode != null)
 			{
-				node = node.eastNode;
-				toPos += new Vector3(0.5f, 0, 0);
+				nextNode = node.eastNode;
 			}
 			else if (direction == Direction.SOUTH && node.southNode != null)
 			{
-				node = node.southNode;
-				toPos += new Vector3(0, 0, -0.5f);
+				nextNode = node.southNode;
 			}
 			else if (direction == Direction.WEST && node.westNode != null)
 			{
-				node = node.westNode;
-				toPos += new Vector3(-0.5f, 0, 0);
+				nextNode = node.westNode;
 			}
 
-			if (direction != Direction.SOUTH && node.northNode != null)
+			if (nextNode != null)
 			{
-				direction = Direction.NORTH;
-				toPos += new Vector3(0, 0, 0.5f);
+				toPos = Vector3.Lerp(node.pos, nextNode.pos, 0.5f);
+				node = nextNode;
 			}
-			else if (direction != Direction.WEST && node.eastNode != null)
+
+			// Find and pick an available path
+			List<Direction> directions = new List<Direction>();
+
+			if (direction == Direction.NORTH)
 			{
-				direction = Direction.EAST;
-				toPos += new Vector3(0.5f, 0, 0);
+				if (node.ns) { directions.Add(Direction.NORTH); }
+				if (node.se) { directions.Add(Direction.EAST); }
+				if (node.sw) { directions.Add(Direction.WEST); }
 			}
-			else if (direction != Direction.NORTH && node.southNode != null)
+			else if (direction == Direction.EAST)
 			{
-				direction = Direction.SOUTH;
-				toPos += new Vector3(0, 0, -0.5f);
+				if (node.ew) { directions.Add(Direction.EAST); }
+				if (node.nw) { directions.Add(Direction.NORTH); }
+				if (node.sw) { directions.Add(Direction.SOUTH); }
 			}
-			else if (direction != Direction.EAST && node.westNode != null)
+			else if (direction == Direction.SOUTH)
 			{
-				direction = Direction.WEST;
-				toPos += new Vector3(-0.5f, 0, 0);
+				if (node.ns) { directions.Add(Direction.SOUTH); }
+				if (node.ne) { directions.Add(Direction.EAST); }
+				if (node.nw) { directions.Add(Direction.WEST); }
+			}
+			else if (direction == Direction.WEST)
+			{
+				if (node.ew) { directions.Add(Direction.WEST); }
+				if (node.ne) { directions.Add(Direction.NORTH); }
+				if (node.se) { directions.Add(Direction.SOUTH); }
+			}
+
+			if (directions.Count != 0)
+			{
+				direction = directions[Random.Range(0, directions.Count)];
+			}
+			else
+			{
+				// Dead-end, try flipping
+				FlipDirection();
 			}
 		}
 
 		transform.position = pos;
+	}
+
+	private void FlipDirection()
+	{
+		switch (direction)
+		{
+			case Direction.NORTH:
+				direction = Direction.SOUTH;
+				break;
+			case Direction.SOUTH:
+				direction = Direction.NORTH;
+				break;
+			case Direction.EAST:
+				direction = Direction.WEST;
+				break;
+			case Direction.WEST:
+				direction = Direction.EAST;
+				break;
+		}
 	}
 }
