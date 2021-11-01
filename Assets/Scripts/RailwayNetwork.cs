@@ -52,7 +52,7 @@ public class RailwayNetwork : MonoBehaviour
 		addNode(new GridPos(2, 0), new RailNode(true, false, false, false, false, false));
 		addNode(new GridPos(2, -1), new RailNode(false, true, true, true, false, false));
 		addNode(new GridPos(1, -1), new RailNode(false, true, false, true, false, false));
-		addNode(new GridPos(0, -1), new RailNode(false, false, true, false, false, false));
+		//addNode(new GridPos(0, -1), new RailNode(false, false, true, false, false, false));
 
 		addNode(new GridPos(3, 1), new RailNode(false, false, false, false, false, true));
 		addNode(new GridPos(3, 0), new RailNode(true, false, false, false, false, false));

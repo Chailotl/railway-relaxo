@@ -367,6 +367,7 @@ GameObject:
   - component: {fileID: 1385390393}
   - component: {fileID: 1385390392}
   - component: {fileID: 1385390395}
+  - component: {fileID: 1385390396}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -453,3 +454,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   straightTrack: {fileID: 3911337880059885217, guid: 37b2486147ea03347ad2d7af17755ff4, type: 3}
   angleTrack: {fileID: 5994134330628921265, guid: 05a5aa34c41478042b4e6a439f6dcb75, type: 3}
+--- !u!114 &1385390396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385390391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80655bd302ec014d9bd12e3b5b1c552, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  network: {fileID: 1385390395}
