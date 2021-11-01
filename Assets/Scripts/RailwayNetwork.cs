@@ -111,6 +111,7 @@ public class RailwayNetwork : MonoBehaviour
 
 	public void joinWithNorthNode(GridPos pos, RailNode node)
 	{
+		// TODO: use the new built-in node pos
 		if (railNodes.TryGetValue(pos + GridPos.north, out RailNode otherNode))
 		{
 			node.northNode = otherNode;
