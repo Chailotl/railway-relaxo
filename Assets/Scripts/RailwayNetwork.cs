@@ -12,39 +12,6 @@ public class RailwayNetwork : MonoBehaviour
 	[SerializeField]
 	private GameObject angleTrack;
 
-	public struct GridPos : IEquatable<GridPos>
-	{
-		public readonly int x;
-		public readonly int z;
-
-		public GridPos(int x, int z)
-		{
-			this.x = x;
-			this.z = z;
-		}
-
-		public static GridPos north = new GridPos(0, 1);
-		public static GridPos south = new GridPos(0, -1);
-		public static GridPos east = new GridPos(1, 0);
-		public static GridPos west = new GridPos(-1, 0);
-
-		public override bool Equals(object other) => other is GridPos && Equals(other);
-		public bool Equals(GridPos other) => this == other;
-		public override int GetHashCode()
-		{
-			int hash = 17;
-			hash = hash * 23 + x.GetHashCode();
-			hash = hash * 23 + z.GetHashCode();
-			return hash;
-		}
-
-		public static GridPos operator +(GridPos lhs, GridPos rhs) => new GridPos(lhs.x + rhs.x, lhs.z + rhs.z);
-		public static GridPos operator -(GridPos lhs, GridPos rhs) => new GridPos(lhs.x - rhs.x, lhs.z - rhs.z);
-		public static bool operator ==(GridPos lhs, GridPos rhs) => lhs.x == rhs.x && lhs.z == rhs.z;
-		public static bool operator !=(GridPos lhs, GridPos rhs) => !(lhs == rhs);
-		public static implicit operator Vector3(GridPos pos) => new Vector3(pos.x, 0, pos.z);
-	}
-
 	public class RailNode
 	{
 		public GridPos pos;
@@ -177,4 +144,37 @@ public class RailwayNetwork : MonoBehaviour
 			otherNode.eastNode = node;
 		}
 	}
+}
+
+public struct GridPos : IEquatable<GridPos>
+{
+	public readonly int x;
+	public readonly int z;
+
+	public GridPos(int x, int z)
+	{
+		this.x = x;
+		this.z = z;
+	}
+
+	public static GridPos north = new GridPos(0, 1);
+	public static GridPos south = new GridPos(0, -1);
+	public static GridPos east = new GridPos(1, 0);
+	public static GridPos west = new GridPos(-1, 0);
+
+	public override bool Equals(object other) => other is GridPos && Equals(other);
+	public bool Equals(GridPos other) => this == other;
+	public override int GetHashCode()
+	{
+		int hash = 17;
+		hash = hash * 23 + x.GetHashCode();
+		hash = hash * 23 + z.GetHashCode();
+		return hash;
+	}
+
+	public static GridPos operator +(GridPos lhs, GridPos rhs) => new GridPos(lhs.x + rhs.x, lhs.z + rhs.z);
+	public static GridPos operator -(GridPos lhs, GridPos rhs) => new GridPos(lhs.x - rhs.x, lhs.z - rhs.z);
+	public static bool operator ==(GridPos lhs, GridPos rhs) => lhs.x == rhs.x && lhs.z == rhs.z;
+	public static bool operator !=(GridPos lhs, GridPos rhs) => !(lhs == rhs);
+	public static implicit operator Vector3(GridPos pos) => new Vector3(pos.x, 0, pos.z);
 }

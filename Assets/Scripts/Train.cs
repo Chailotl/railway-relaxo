@@ -10,14 +10,14 @@ public class Train : MonoBehaviour
 	}
 
 	private RailwayNetwork.RailNode node;
-	private RailwayNetwork.GridPos gridPos;
+	private GridPos gridPos;
 	private Direction direction;
 	private Vector3 toPos;
 
 	void Start()
 	{
-		node = RailwayNetwork.railNodes[new RailwayNetwork.GridPos(0, 0)];
-		gridPos = new RailwayNetwork.GridPos(0, 0);
+		node = RailwayNetwork.railNodes[new GridPos(0, 0)];
+		gridPos = new GridPos(0, 0);
 		direction = Direction.NORTH;
 		toPos = new Vector3(0, 0, 0.5f);
 	}
