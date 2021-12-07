@@ -63,10 +63,23 @@ public class RailwayNetwork : MonoBehaviour
 
 	public bool addNode(GridPos pos, RailNode node)
 	{
-		if (railNodes.ContainsKey(pos)) { return false; }
+		if (railNodes.ContainsKey(pos))
+		{
+			RailNode temp = node;
+			node = railNodes[pos];
 
-		railNodes.Add(pos, node);
-		node.pos = pos;
+			if (temp.ns) { node.ns = true; }
+			if (temp.ew) { node.ew = true; }
+			if (temp.ne) { node.ne = true; }
+			if (temp.nw) { node.nw = true; }
+			if (temp.se) { node.se = true; }
+			if (temp.sw) { node.sw = true; }
+		}
+		else
+		{
+			railNodes.Add(pos, node);
+			node.pos = pos;
+		}
 
 		// Add game objects and connect nodes
 		if (node.ns)
