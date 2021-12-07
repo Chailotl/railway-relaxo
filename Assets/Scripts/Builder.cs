@@ -24,9 +24,29 @@ public class Builder : MonoBehaviour
 			Debug.DrawLine(hitPos + new Vector3(0.5f, 0, -0.5f), hitPos - new Vector3(0.5f, 0, -0.5f));
 		}
 
-		if (hitPos != null && Input.GetMouseButtonDown(0))
+		// Camera controller
+		Vector3 pos = transform.position;
+		Vector3 forward = transform.forward;
+		forward.y = 0;
+		forward.Normalize();
+
+		if (Input.GetKey(KeyCode.W))
 		{
-			network.addNode(new GridPos((int)hitPos.x, (int)hitPos.z), new RailwayNetwork.RailNode(true, true, true, true, true, true));
+			pos += forward * 2f * Time.deltaTime;
 		}
+		if (Input.GetKey(KeyCode.S))
+		{
+			pos -= forward * 2f * Time.deltaTime;
+		}
+		if (Input.GetKey(KeyCode.A))
+		{
+			pos -= transform.right * 2f * Time.deltaTime;
+		}
+		if (Input.GetKey(KeyCode.D))
+		{
+			pos += transform.right * 2f * Time.deltaTime;
+		}
+
+		transform.position = pos;
 	}
 }
