@@ -16,6 +16,8 @@ public class Builder : MonoBehaviour
 	private RectTransform cursor;
 	[SerializeField]
 	private float sensitivity = 1f;
+	[SerializeField]
+	private float cornerEpsilon = 0.4f;
 
 	void Start()
 	{
@@ -24,17 +26,42 @@ public class Builder : MonoBehaviour
 
 	void Update()
 	{
-		Vector3 hitPos = Vector3.zero;
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+		ray = new Ray(transform.position, Quaternion.Euler(-rotX, rotY, 0) * Vector3.forward);
 
 		if (floor.Raycast(ray, out float enter))
 		{
-			hitPos = ray.GetPoint(enter);
-			hitPos.x = Mathf.Round(hitPos.x);
-			hitPos.z = Mathf.Round(hitPos.z);
+			Vector3 hitPos = ray.GetPoint(enter);
+			Vector3 pos2 = new Vector3(Mathf.Round(hitPos.x), 0, Mathf.Round(hitPos.z));
+			Vector3 diff = (hitPos - pos2) * 2f;
 
-			Debug.DrawLine(hitPos + new Vector3(0.5f, 0, 0.5f), hitPos - new Vector3(0.5f, 0, 0.5f));
-			Debug.DrawLine(hitPos + new Vector3(0.5f, 0, -0.5f), hitPos - new Vector3(0.5f, 0, -0.5f));
+			// Draw square
+			Debug.DrawLine(pos2 + new Vector3(0.5f, 0, 0.5f), pos2 + new Vector3(0.5f, 0, -0.5f));
+			Debug.DrawLine(pos2 + new Vector3(0.5f, 0, 0.5f), pos2 + new Vector3(-0.5f, 0, 0.5f));
+			Debug.DrawLine(pos2 + new Vector3(-0.5f, 0, -0.5f), pos2 + new Vector3(0.5f, 0, -0.5f));
+			Debug.DrawLine(pos2 + new Vector3(-0.5f, 0, -0.5f), pos2 + new Vector3(-0.5f, 0, 0.5f));
+
+			/// Figure out where in the grid is the mouse
+			int x = diff.x > cornerEpsilon ? 1 : diff.x < -cornerEpsilon ? -1 : 0;
+			int z = diff.z > cornerEpsilon ? 1 : diff.z < -cornerEpsilon ? -1 : 0;
+
+			bool ns = x == 0 && z != 0;
+			bool ew = x != 0 && z == 0;
+			bool ne = x == 1 && z == 1;
+			bool nw = x == -1 && z == 1;
+			bool se = x == 1 && z == -1;
+			bool sw = x == -1 && z == -1;
+
+			// Draw line
+			Debug.DrawLine(pos2, hitPos, x != 0 && z != 0 ? Color.red : Color.gray);
+
+			// Place rails
+			if (Input.GetMouseButtonDown(0))
+			{
+				network.addNode(new GridPos((int)pos2.x, (int)pos2.z), new RailwayNetwork.RailNode(ns, ew, ne, nw, se, sw));
+			}
+
 			// Move cursor
 			cursor.position = Camera.main.WorldToScreenPoint(hitPos);
 		}
