@@ -13,6 +13,8 @@ public class Builder : MonoBehaviour
 	[SerializeField]
 	private RailwayNetwork network;
 	[SerializeField]
+	private RectTransform cursor;
+	[SerializeField]
 	private float sensitivity = 1f;
 
 	void Start()
@@ -33,6 +35,8 @@ public class Builder : MonoBehaviour
 
 			Debug.DrawLine(hitPos + new Vector3(0.5f, 0, 0.5f), hitPos - new Vector3(0.5f, 0, 0.5f));
 			Debug.DrawLine(hitPos + new Vector3(0.5f, 0, -0.5f), hitPos - new Vector3(0.5f, 0, -0.5f));
+			// Move cursor
+			cursor.position = Camera.main.WorldToScreenPoint(hitPos);
 		}
 
 		// Camera controller
