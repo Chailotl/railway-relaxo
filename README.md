@@ -1,2 +1,2 @@
 # railway-relaxo
- A casual railway building sim.
+ A casual train logistics manager.
